@@ -1,0 +1,97 @@
+/* =========================================================================
+   NEON STRIKE: THE LAST LIGHT — effects.css
+   Lớp hiệu ứng toàn màn hình: scanline, noise, lưới HUD kỹ thuật, vignette,
+   glitch chữ, digital distortion; preview trang trí trong Collection;
+   chế độ giảm hiệu ứng cho máy yếu.
+   ========================================================================= */
+.fx-layer { position: fixed; inset: 0; pointer-events: none; }
+.fx-grid {
+  z-index: 1; opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at center, transparent 30%, #000 85%);
+}
+.fx-grid::before, .fx-grid::after {
+  content: ''; position: absolute; width: 140px; height: 140px; border: 1px solid rgba(34, 211, 238, 0.35);
+}
+.fx-grid::before { top: 14px; left: 14px; border-right: 0; border-bottom: 0; }
+.fx-grid::after { bottom: 14px; right: 14px; border-left: 0; border-top: 0; }
+.fx-vignette { z-index: 2; background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.6)); }
+.fx-scan {
+  z-index: 80;
+  background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px);
+  mix-blend-mode: overlay;
+}
+.fx-scan::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 18vh; top: -20vh;
+  background: linear-gradient(180deg, transparent, rgba(125, 211, 252, 0.05), transparent);
+  animation: scanMove 7s linear infinite;
+}
+@keyframes scanMove { to { transform: translateY(140vh); } }
+.fx-noise {
+  z-index: 81; opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: noise 0.4s steps(3) infinite;
+}
+@keyframes noise { 0% { transform: translate(0, 0); } 33% { transform: translate(-4%, 3%); } 66% { transform: translate(3%, -2%); } }
+body.in-game .fx-grid, body.in-game .fx-vignette { opacity: 0; }
+body.in-game .fx-scan { opacity: 0.5; }
+
+/* ---------------- Glitch chữ ---------------- */
+.glitch { position: relative; }
+.glitch::before, .glitch::after {
+  content: attr(data-text); position: absolute; inset: 0; pointer-events: none;
+  background: inherit; -webkit-background-clip: inherit; background-clip: inherit;
+}
+.glitch::before { color: #22d3ee; text-shadow: none; transform: translate(-2px, 0); clip-path: inset(0 0 0 0); opacity: 0; animation: glitchA 4.5s infinite steps(1); mix-blend-mode: screen; }
+.glitch::after { color: #ec4899; text-shadow: none; transform: translate(2px, 0); opacity: 0; animation: glitchB 4.5s infinite steps(1); mix-blend-mode: screen; }
+@keyframes glitchA {
+  0%, 88%, 100% { opacity: 0; clip-path: inset(0 0 100% 0); }
+  89% { opacity: 0.9; clip-path: inset(10% 0 60% 0); transform: translate(-6px, -1px); }
+  91% { opacity: 0.9; clip-path: inset(50% 0 20% 0); transform: translate(5px, 1px); }
+  93% { opacity: 0.9; clip-path: inset(75% 0 5% 0); transform: translate(-3px, 0); }
+  95% { opacity: 0; }
+}
+@keyframes glitchB {
+  0%, 89%, 100% { opacity: 0; clip-path: inset(0 0 100% 0); }
+  90% { opacity: 0.9; clip-path: inset(40% 0 35% 0); transform: translate(6px, 1px); }
+  92% { opacity: 0.9; clip-path: inset(5% 0 80% 0); transform: translate(-5px, 0); }
+  94% { opacity: 0.9; clip-path: inset(65% 0 15% 0); transform: translate(3px, -1px); }
+  96% { opacity: 0; }
+}
+.logo-main.glitch { animation: logoFlicker 6s infinite; }
+@keyframes logoFlicker { 0%, 92%, 100% { opacity: 1; } 93% { opacity: 0.6; } 94% { opacity: 1; } 96% { opacity: 0.8; filter: hue-rotate(40deg); } 97% { filter: none; } }
+.scr-title h2::after { content: ''; display: block; height: 2px; width: 60px; margin-top: 6px; background: linear-gradient(90deg, var(--cyan), transparent); box-shadow: 0 0 10px var(--cyan); }
+
+/* ---------------- Collection: preview hiệu ứng thắng ---------------- */
+.col-img.fx { position: relative; overflow: hidden; background: radial-gradient(circle at 50% 70%, #1a1240, #05050d); }
+.col-img.fx i { position: absolute; left: 50%; top: 60%; border-radius: 50%; transform: translate(-50%, -50%); animation: fxRing 2s infinite ease-out; }
+.col-img.fx i:nth-child(2) { animation-delay: 0.6s; } .col-img.fx i:nth-child(3) { animation-delay: 1.2s; }
+@keyframes fxRing { from { width: 0; height: 0; opacity: 1; } to { width: 140%; height: 140%; opacity: 0; } }
+.fx-neon i { border: 3px solid #22d3ee; box-shadow: 0 0 20px #22d3ee; }
+.fx-glitch i { border-radius: 0 !important; border: 3px dashed #f0abfc; box-shadow: 4px 0 0 #22d3ee, -4px 0 0 #f43f5e; }
+.fx-storm i { border: 2px solid #fde047; box-shadow: 0 0 30px #fde047, inset 0 0 20px #22d3ee; }
+.fx-phoenix i { border: 3px solid #f97316; box-shadow: 0 0 30px #f97316, 0 -20px 40px #facc15; }
+.fx-void i { border: 3px solid #a855f7; box-shadow: inset 0 0 30px #7c3aed; animation-direction: reverse; }
+
+/* ---------------- Hình nền hồ sơ ---------------- */
+.pbg-grid { background: linear-gradient(rgba(34, 211, 238, 0.12) 1px, transparent 1px) 0 0 / 22px 22px, linear-gradient(90deg, rgba(34, 211, 238, 0.12) 1px, transparent 1px) 0 0 / 22px 22px, linear-gradient(135deg, #0b1233, #170c30) !important; }
+.pbg-city { background: linear-gradient(0deg, #05030f 0 30%, transparent 30%), repeating-linear-gradient(90deg, #120a2c 0 18px, #1d1145 18px 24px, #0b0820 24px 40px), linear-gradient(180deg, #2a0f45, #070512) !important; }
+.pbg-rain { background: repeating-linear-gradient(105deg, rgba(240, 171, 252, 0.15) 0 1px, transparent 1px 12px), linear-gradient(160deg, #3b0a3f, #0b0a2a) !important; }
+.pbg-reactor { background: radial-gradient(circle at 50% 100%, rgba(45, 212, 191, 0.55), transparent 60%), linear-gradient(180deg, #010607, #03211f) !important; }
+.pbg-aurora { background: linear-gradient(170deg, rgba(45, 212, 191, 0.35), transparent 40%), linear-gradient(190deg, rgba(167, 139, 250, 0.35), transparent 50%), linear-gradient(180deg, #01040f, #134a6e) !important; }
+.pbg-core { background: radial-gradient(circle at 50% 30%, rgba(253, 230, 138, 0.6), transparent 45%), radial-gradient(circle at 50% 30%, transparent 50%, rgba(251, 191, 36, 0.2) 51%, transparent 55%), linear-gradient(180deg, #2a210a, #05040d) !important; }
+
+/* ---------------- Giảm hiệu ứng ---------------- */
+body.reduce-fx .fx-noise, body.reduce-fx .fx-scan::after { display: none; }
+body.reduce-fx .glitch::before, body.reduce-fx .glitch::after { display: none; }
+body.reduce-fx .glass { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(10, 14, 36, 0.92); }
+body.reduce-fx *, body.reduce-fx *::before, body.reduce-fx *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+body.reduce-fx .ticker-in { animation: ticker 60s linear infinite !important; }
+body.reduce-fx .vs-load i { animation: load 2.9s linear both !important; }
+body.reduce-fx .credits-in { animation: roll 9s linear forwards !important; }
+body.reduce-fx .ann.out { animation: annOut 0.35s forwards !important; }
+body.q-low .fx-noise { display: none; }
+@media (prefers-reduced-motion: reduce) { .fx-noise, .fx-scan::after { display: none; } }

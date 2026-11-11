@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#05060f">
+  <meta name="description" content="NEON STRIKE: THE LAST LIGHT — game đối kháng 2D cyberpunk viết bằng HTML5 Canvas, CSS3 và JavaScript.">
+  <title>NEON STRIKE: THE LAST LIGHT</title>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <!-- Font khoa học viễn tưởng (Google Fonts). Không có mạng → tự dùng font hệ thống. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Chakra+Petch:wght@400;500;600;700&family=Share+Tech+Mono&display=swap&subset=vietnamese" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/effects.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Nền thành phố Neo-Veyra (canvas động, parallax theo chuột) -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="fx-layer fx-grid"></div>
+    <div class="fx-layer fx-vignette"></div>
+
+    <!-- Các màn hình -->
+    <main id="screens">
+      <section class="screen" id="screen-boot"></section>
+      <section class="screen" id="screen-intro"></section>
+      <section class="screen" id="screen-menu"></section>
+      <section class="screen" id="screen-modes"></section>
+      <section class="screen" id="screen-select"></section>
+      <section class="screen" id="screen-arena"></section>
+      <section class="screen" id="screen-vs"></section>
+      <section class="screen" id="screen-hud"></section>
+      <section class="screen" id="screen-results"></section>
+      <section class="screen" id="screen-dialogue"></section>
+      <section class="screen" id="screen-ending"></section>
+      <section class="screen" id="screen-codex"></section>
+      <section class="screen" id="screen-collection"></section>
+      <section class="screen" id="screen-profile"></section>
+      <section class="screen" id="screen-settings"></section>
+    </main>
+
+    <!-- Lớp phủ: scanline, noise, chuyển cảnh, thông báo, hộp thoại, cảm ứng -->
+    <div class="fx-layer fx-scan"></div>
+    <div class="fx-layer fx-noise"></div>
+    <div id="transition"><i></i><i></i><i></i><b>NEON STRIKE</b></div>
+    <div id="toasts"></div>
+    <div id="modal"></div>
+    <div id="touch"></div>
+    <div id="rotate-hint"><div>↻<b>Xoay ngang thiết bị</b><span>để có trải nghiệm chiến đấu tốt nhất</span></div></div>
+  </div>
+
+  <!-- Thứ tự tải module (không cần build tool, chạy trực tiếp bằng file://) -->
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/characters.js"></script>
+  <script src="js/animation.js"></script>
+  <script src="js/collision.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/arenas.js"></script>
+  <script src="js/skills.js"></script>
+  <script src="js/combat.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/story.js"></script>
+  <script src="js/hud.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/modes.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/ui-menu.js"></script>
+  <script src="js/ui-match.js"></script>
+  <script src="js/ui-pages.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
